@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="farkle.css">
+	<script type="text/javascript" src="farkle.js"></script>
+	<title>Farkle!</title>
+</head>
+
+<body onload="initializeDice()">
+	<header class="row header">Welcome to Farkle!</header>
+	<div class="row">
+		<!-- Dice images -->
+		<div class="dice">
+			<img src="images/1.png" id="die1" data-number="0" onclick="diceClick(this)">
+			<img src="images/2.png" id="die2" data-number="1" onclick="diceClick(this)">
+			<img src="images/3.png" id="die3" data-number="2" onclick="diceClick(this)">
+			<img src="images/4.png" id="die4" data-number="3" onclick="diceClick(this)">
+			<img src="images/5.png" id="die5" data-number="4" onclick="diceClick(this)">
+			<img src="images/6.png" id="die6" data-number="5" onclick="diceClick(this)">
+		</div>
+	</div>
+	<!-- Scoring -->
+    <div class="bothScore">
+        <div>
+            <div class="row scoreTitle"> Turn </div>
+	        <div class="row score" id="scoreCountTurn"> 0 </div>
+        </div>
+        <div>
+            <div class="row scoreTitle"> Total </div>
+            <div class="row score" id="scoreCountTotal"> 0 </div>
+        </div>
+    </div>
+
+	<!-- Button row -->
+	<div class="row">
+		<button class="button roll column" id="rollDice" onclick="rollDice()">Roll Dice</button>
+		<button class="button bank column" id="bankScore" onclick="bankScore()">Bank Score</button>
+	</div>
+    <script type="text/javascript" src="farkle.js"></script>
+</body>
+
+</script>
+</html>
