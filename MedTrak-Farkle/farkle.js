@@ -13,7 +13,7 @@ function initializeDice(){
         diceArr[i].locked = 0;
 	}
     rollDice();
-    console.log(diceArr, 'This is the Dice Array of Objects after Initialization');
+    // console.log(diceArr, 'This is the Dice Array of Objects after Initialization');
 }
  // dice 1 = diceArr[0] = {id: 'die01', value: 1, clicked: 0}
 
@@ -24,14 +24,14 @@ function rollDice(){
         if (dice.clicked) {
             dice.locked = 1; //applying a lock to the dice if clicked
         }
-        console.log(dice, 'dice ele in roll dice first for loop')
+        // console.log(dice, 'dice ele in roll dice first for loop')
     }
 	for(var i=0; i < diceArr.length; i++){
         let dice = diceArr[i]
 		if(!diceArr[i].clicked && !dice.locked){
             diceArr[i].value = Math.floor((Math.random() * 6) + 1);
 		}
-        console.log(dice, 'dice ele in roll dice second for loop')
+        // console.log(dice, 'dice ele in roll dice second for loop')
 	}
 	updateDiceImg();
 
@@ -39,10 +39,11 @@ function rollDice(){
         let ImageArr = document.getElementsByClassName("transparent");
         for (let i = 0; i < ImageArr.length; i++) {
             ImageArr[i].classList.toggle("transparent");
+            console.log("if banked toggle")
             ImageArr[i].removeAttribute('class');
         }
         banked = 0;
-        console.log(banked, 'banked text number');
+        // console.log(banked, 'banked text number');
     }
 
 
@@ -65,8 +66,9 @@ function diceClick(img){
 
     if (transparent) {
         dice.clicked ? dice.clicked = 0 : dice.clicked = 1;
-        console.log('Transparent Change')
+        // console.log('Transparent Change');
 	    img.classList.toggle("transparent");
+        console.log("if transparent toggle")
     }
     // else if (countDice(dice)) {
 
@@ -124,10 +126,12 @@ function calculateScore() {
     if (flag) {
         document.getElementById('rollDice').setAttribute('disabled', '')
         document.getElementById('bankScore').setAttribute('disabled', '')
+        console.log("if flag disabled true")
     }
     else {
         document.getElementById('rollDice').removeAttribute('disabled');
         document.getElementById('bankScore').removeAttribute('disabled');
+        console.log("else flag disabled false")
     }
 
 }
@@ -143,7 +147,7 @@ function bankScore() {
         diceArr[i].clicked = 0;
         diceArr[i].locked = 0;
     }
-    console.log(diceArr, 'This is bank score dice arr after the fact');
+    // console.log(diceArr, 'This is bank score dice arr after the fact');
     banked = 1;
     calculateScore();
     rollDice();
@@ -151,6 +155,7 @@ function bankScore() {
     let ImageArr = document.getElementsByClassName("transparent");
     for (let i = 0; i < ImageArr.length; i++) {
         ImageArr[i].classList.toggle("transparent");
+        console.log("for loop toggle")
         ImageArr[i].removeAttribute('class');
     }
 }
