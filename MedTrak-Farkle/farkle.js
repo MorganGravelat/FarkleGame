@@ -1,5 +1,7 @@
 let diceArr = [];
+let scoringDice = [];
 let turn = 0;
+let roll = 0;
 let total = 0;
 let flag = false;
 let banked = 0;
@@ -33,18 +35,25 @@ function rollDice(){
 		}
         // console.log(dice, 'dice ele in roll dice second for loop')
 	}
+
 	updateDiceImg();
 
     if (banked) {
         let ImageArr = document.getElementsByClassName("transparent");
-        for (let i = 0; i < ImageArr.length; i++) {
-            ImageArr[i].classList.toggle("transparent");
-            console.log("if banked toggle")
-            ImageArr[i].removeAttribute('class');
+        let ImageArr2 = [...ImageArr]
+        for (let i = 0; i < ImageArr2.length; i++) {
+            ImageArr2[i].classList.toggle("transparent");
+            console.log("if banked toggle", ImageArr2)
+            ImageArr2[i].removeAttribute('class');
         }
         banked = 0;
         // console.log(banked, 'banked text number');
     }
+
+    turn += roll;
+    roll = 0;
+
+
 
 
 }
@@ -94,35 +103,37 @@ function countDice(dice) {
 
 function calculateScore() {
     let seen = {}
-    let tempScore = 0;
+    let tempScore = isFarkle();
     flag = false;
-    for (let i = 0; i < diceArr.length; i++) {
-        let die = diceArr[i]
-        let dieValue = die.value
+    // for (let i = 0; i < diceArr.length; i++) {
+    //     let die = diceArr[i]
+    //     let dieValue = die.value
 
-        if (die.clicked) {
-            if (seen[dieValue]) seen[dieValue]++
-            else seen[dieValue] = 1
-        }
-    }
+    //     if (die.clicked && !die.locked) {
+    //         if (seen[dieValue]) seen[dieValue]++
+    //         else seen[dieValue] = 1
+    //     }
+    // }
 
-    for (let dieVal in seen) {
-        if (seen[dieVal] >= 3) {
-            if (dieVal == 1) tempScore += 1000
-            else tempScore += dieVal * 100
-        }
-        else if (dieVal == 1) {
-            tempScore += seen[dieVal] * 100
-        }
-        else if (dieVal == 5) {
-            tempScore += seen[dieVal] * 50
-        }
-        else {
-            flag = true;
-        }
-    }
-    turn = tempScore;
-    document.getElementById('scoreCountTurn').innerHTML = turn
+    // for (let dieVal in seen) {
+    //     let count = seen[dieVal]
+    //     if (count >= 3) {
+    //         if (dieVal == 1) tempScore += 1000 * (count - 2)
+    //         else tempScore += dieVal * 100 * (count - 2)
+    //     }
+    //     else if (dieVal == 1) {
+    //         tempScore += count * 100
+    //     }
+    //     else if (dieVal == 5) {
+    //         tempScore += count * 50
+    //     }
+    //     else {
+    //         flag = true;
+    //     }
+    // }
+
+    roll = tempScore;
+    document.getElementById('scoreCountTurn').innerHTML = (turn + roll)
     if (flag) {
         document.getElementById('rollDice').setAttribute('disabled', '')
         document.getElementById('bankScore').setAttribute('disabled', '')
@@ -136,9 +147,50 @@ function calculateScore() {
 
 }
 
+function RealScoreCalculator() {
+    let seen = {}
+    let tempScore = 0;
+    for (let i = 0; i < diceArr.length; i++) {
+        let die = diceArr[i]
+        let dieValue = die.value
+
+        if (!die.locked) {
+            if (seen[dieValue]) seen[dieValue]++
+            else seen[dieValue] = 1
+        }
+    }
+
+    for (let dieVal in seen) {
+        let count = seen[dieVal]
+        if (count >= 3) {
+            if (dieVal == 1) {
+                tempScore += 1000 * (count - 2);
+                scoringDice.push(dieVal);
+            }
+            else {
+                tempScore += dieVal * 100 * (count - 2);
+                scoringDice.push(dieVal);
+            }
+        }
+        else if (dieVal == 1) {
+            tempScore += count * 100;
+            scoringDice.push(dieVal);
+        }
+        else if (dieVal == 5) {
+            tempScore += count * 50;
+            scoringDice.push(dieVal);
+        }
+        else {
+            flag = true;
+        }
+    }
+    return tempScore
+}
+
 function bankScore() {
-    total += turn;
+    total += turn + roll;
     turn = 0;
+    roll = 0;
     document.getElementById('scoreCountTurn').innerHTML = turn;
     document.getElementById('scoreCountTotal').innerHTML = total;
     for (let i = 0; i < diceArr.length; i++) {
@@ -151,11 +203,11 @@ function bankScore() {
     banked = 1;
     calculateScore();
     rollDice();
-    rollDice();
-    let ImageArr = document.getElementsByClassName("transparent");
-    for (let i = 0; i < ImageArr.length; i++) {
-        ImageArr[i].classList.toggle("transparent");
-        console.log("for loop toggle")
-        ImageArr[i].removeAttribute('class');
-    }
+    //rollDice();
+    // let ImageArr = document.getElementsByClassName("transparent");
+    // for (let i = 0; i < ImageArr.length; i++) {
+    //     ImageArr[i].classList.toggle("transparent");
+    //     console.log("for loop toggle")
+    //     ImageArr[i].removeAttribute('class');
+    // }
 }
