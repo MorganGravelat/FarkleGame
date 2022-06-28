@@ -103,35 +103,34 @@ function countDice(dice) {
 
 function calculateScore() {
     let seen = {}
-    let tempScore = isFarkle();
+    let tempScore = 0;
     flag = false;
-    // for (let i = 0; i < diceArr.length; i++) {
-    //     let die = diceArr[i]
-    //     let dieValue = die.value
+    for (let i = 0; i < diceArr.length; i++) {
+        let die = diceArr[i]
+        let dieValue = die.value
 
-    //     if (die.clicked && !die.locked) {
-    //         if (seen[dieValue]) seen[dieValue]++
-    //         else seen[dieValue] = 1
-    //     }
-    // }
+        if (die.clicked && !die.locked) {
+            if (seen[dieValue]) seen[dieValue]++;
+            else seen[dieValue] = 1;
+        }
+    }
 
-    // for (let dieVal in seen) {
-    //     let count = seen[dieVal]
-    //     if (count >= 3) {
-    //         if (dieVal == 1) tempScore += 1000 * (count - 2)
-    //         else tempScore += dieVal * 100 * (count - 2)
-    //     }
-    //     else if (dieVal == 1) {
-    //         tempScore += count * 100
-    //     }
-    //     else if (dieVal == 5) {
-    //         tempScore += count * 50
-    //     }
-    //     else {
-    //         flag = true;
-    //     }
-    // }
-
+    for (let dieVal in seen) {
+        let count = seen[dieVal]
+        if (count >= 3) {
+            if (dieVal == 1) tempScore += 1000 * (count - 2)
+            else tempScore += dieVal * 100 * (count - 2)
+        }
+        else if (dieVal == 1) {
+            tempScore += count * 100
+        }
+        else if (dieVal == 5) {
+            tempScore += count * 50
+        }
+        else {
+            flag = true;
+        }
+    }
     roll = tempScore;
     document.getElementById('scoreCountTurn').innerHTML = (turn + roll)
     if (flag) {
@@ -147,7 +146,7 @@ function calculateScore() {
 
 }
 
-function RealScoreCalculator() {
+function isFarkle() {
     let seen = {}
     let tempScore = 0;
     for (let i = 0; i < diceArr.length; i++) {
