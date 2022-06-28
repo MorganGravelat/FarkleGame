@@ -50,7 +50,16 @@ function rollDice(){
         banked = false;
         // console.log(banked, 'banked text number');
     }
+    punishFarkle();
+    turn += roll;
+    roll = 0;
 
+
+
+
+}
+
+function punishFarkle() {
     let farkle = isFarkle();
     if (farkle) {
         turn = 0;
@@ -72,18 +81,12 @@ function rollDice(){
         p1Farkles++;
         if (p1Farkles >= 3) {
             total -= 500;
-            if (total <= -1) total = 0;
-
+            //if (total <= -1) total = 0;
+            document.getElementById('scoreCountTotal').innerHTML = (total)
         }
     }
-
-    turn += roll;
-    roll = 0;
-
-
-
-
 }
+
 
 /*Updating images of dice given values of rollDice*/
 function updateDiceImg(){
