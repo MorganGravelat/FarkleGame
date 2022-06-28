@@ -3,9 +3,10 @@ let scoringDice = [];
 let turn = 0;
 let roll = 0;
 let total = 0;
+let p1Farkles = 0;
 let flag = false;
-let banked = 0;
-
+let banked = false;
+// 3 farkles in a row -500 points
 function initializeDice(){
 	for(i = 0; i < 6; i++){
 		diceArr[i] = {};
@@ -46,8 +47,34 @@ function rollDice(){
             console.log("if banked toggle", ImageArr2)
             ImageArr2[i].removeAttribute('class');
         }
-        banked = 0;
+        banked = false;
         // console.log(banked, 'banked text number');
+    }
+
+    let farkle = isFarkle();
+    if (farkle) {
+        turn = 0;
+        roll = 0;
+        document.getElementById('scoreCountTurn').innerHTML = (0)
+        alert("FARKLE! You lose all your points for this turn!");
+        let ImageArr = document.getElementsByClassName("transparent");
+        let ImageArr2 = [...ImageArr]
+        for (let i = 0; i < ImageArr2.length; i++) {
+            console.log("if banked toggle", ImageArr2)
+            ImageArr2[i].removeAttribute('class');
+        }
+        for (let i = 0; i < diceArr.length; i++) {
+            let dice = diceArr[i];
+            diceArr[i].clicked = 0;
+            diceArr[i].locked = 0;
+        }
+        rollDice();
+        p1Farkles++;
+        if (p1Farkles >= 3) {
+            total -= 500;
+            if (total <= -1) total = 0;
+
+        }
     }
 
     turn += roll;
@@ -148,7 +175,6 @@ function calculateScore() {
 
 function isFarkle() {
     let seen = {}
-    let tempScore = 0;
     for (let i = 0; i < diceArr.length; i++) {
         let die = diceArr[i]
         let dieValue = die.value
@@ -163,27 +189,21 @@ function isFarkle() {
         let count = seen[dieVal]
         if (count >= 3) {
             if (dieVal == 1) {
-                tempScore += 1000 * (count - 2);
-                scoringDice.push(dieVal);
+                return false;
             }
             else {
-                tempScore += dieVal * 100 * (count - 2);
-                scoringDice.push(dieVal);
+                return false;
             }
         }
         else if (dieVal == 1) {
-            tempScore += count * 100;
-            scoringDice.push(dieVal);
+            return false;
         }
         else if (dieVal == 5) {
-            tempScore += count * 50;
-            scoringDice.push(dieVal);
+            return false;
         }
-        else {
-            flag = true;
-        }
+
     }
-    return tempScore
+    return true;
 }
 
 function bankScore() {
@@ -199,7 +219,8 @@ function bankScore() {
         diceArr[i].locked = 0;
     }
     // console.log(diceArr, 'This is bank score dice arr after the fact');
-    banked = 1;
+    banked = true;
+    p1Farkles = 0;
     calculateScore();
     rollDice();
     //rollDice();
